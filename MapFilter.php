@@ -3,10 +3,10 @@
 Plugin Name: MapFilter
 Description: Showing points on google maps. Filtring them by queries
 Author: David Georgiev
-Version: 0.1
+Version: 2.0
 */
 
-define("GOOGLEAPIKEY", "your google api here");
+define("GOOGLEAPIKEY", "your google api key");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -131,6 +131,16 @@ function show_the_user_interface(){
 	echo '</select></div>';
 	echo '<button type="submit" id="RefreshMapButton">Filter</button>';
 	
+	
+	
+	
+	//echo '<input id="experimantalinput" type="text" name="experimantalinput" placeholder="experimantal input" autocomplete="off"></input>';
+	//echo '<button type="submit" id="ExperimantalButton">ExperimantalButton</button>';
+	//echo '<div id="ExperimantalResult"></div>';
+	
+	
+	
+	
 	echo '<div id="mymaphere"></div>';
 	
 	echo "<script>";
@@ -141,19 +151,24 @@ function show_the_user_interface(){
 	echo '$(".chosen2").val("").trigger("chosen:updated");';
 	echo '$(".chosen3").chosen({width: "50%",allow_single_deselect: true,no_results_text: "City not found!"});';
 	echo '$(".chosen3").val("").trigger("chosen:updated");';
-	//echo '$(".chosen1").change(function(){$("#country_div").load("/wp-content/plugins/MapFilter/ReloadField.php?field=country&timezone=" + $("#timezone").val());';
+	//echo '$(".chosen1").change(function(){$("#country_div").load("/wp-content/plugins/MapFilter/ReloadField.php?field=country&timezone=" + $("#timezone").val().split(" ").join("+"));';
 	echo '$("#RefreshMapButton").click(function(){';
-	echo '$("#mymaphere").load("/wp-content/plugins/MapFilter/LoadMap.php?timezone="+$("#timezone").val()+"&country="+$("#country").val() + "&city="+$("#city").val());';
+	//echo 'alert("/wp-content/plugins/MapFilter/LoadMap.php?timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+") + "&city="+String($("#city").val()).split(" ").join("+"));';
+	echo '$("#mymaphere").load("/wp-content/plugins/MapFilter/LoadMap.php?timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+") + "&city="+String($("#city").val()).split(" ").join("+"));';
 	echo '});';
 	
 	echo '$("#timezone_div").change(function(){';
-	echo '$("#country").load("/wp-content/plugins/MapFilter/ReloadField.php?field=country&timezone="+$("#timezone").val());';
-	echo '$("#city").load("/wp-content/plugins/MapFilter/ReloadField.php?field=city&timezone="+$("#timezone").val()+"&country="+$("#country").val());';
+	echo '$("#country").load("/wp-content/plugins/MapFilter/ReloadField.php?field=country&timezone="+String($("#timezone").val()).split(" ").join("+"));';
+	echo '$("#city").load("/wp-content/plugins/MapFilter/ReloadField.php?field=city&timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+"));';
 	echo '});';
 	
 	echo '$("#country_div").change(function(){';
-	echo '$("#city").load("/wp-content/plugins/MapFilter/ReloadField.php?field=city&timezone="+$("#timezone").val()+"&country="+$("#country").val());';
+	echo '$("#city").load("/wp-content/plugins/MapFilter/ReloadField.php?field=city&timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+"));';
 	echo '});';
+	
+	//echo '$("#ExperimantalButton").click(function(){';
+	//echo '$("#ExperimantalResult").load("/wp-content/plugins/MapFilter/ExperimantalGetter.php?experimantalinput="+($("#experimantalinput").val().split(" ").join("+"));';
+	//echo '});';
 	
 	
 	echo "});";
