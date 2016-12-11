@@ -6,7 +6,7 @@ Author: David Georgiev
 Version: 2.0
 */
 
-define("GOOGLEAPIKEY", "your google api key");
+define("GOOGLEAPIKEY", "your google api key here");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

@@ -20,7 +20,7 @@ function CountryReload(){
 		echo '<option value="'.$row->country_name.'">'.$row->country_name.'</option>';
 	}
 	//echo '</select>';
-	echo '<script>$(".chosen2").val("").trigger("chosen:updated");$(".chosen3").val("").trigger("chosen:updated");</script>';
+	echo '<script>$(".chosen2").val("").trigger("chosen:updated");</script>';
 	
 }
 function CityReload(){
