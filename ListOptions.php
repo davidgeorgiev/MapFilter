@@ -1,7 +1,13 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require 'wp-load.php';
+if(isset($_GET["jquery_refresh_timezone"])){
+	require '../../../wp-load.php';
+	TimezoneListOptions();
+	echo '<script>$(".chosen1").val("").trigger("chosen:updated");</script>';
+}else{
+	require 'wp-load.php';
+}
 
 function TimezoneListOptions(){
 	echo '<option selected="selected" value="null">Select a timezone</option>';

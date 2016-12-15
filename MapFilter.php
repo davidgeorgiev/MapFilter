@@ -3,7 +3,7 @@
 Plugin Name: MapFilter
 Description: Showing points on google maps. Filtring them by queries
 Author: David Georgiev
-Version: 2.0
+Version: 3.0
 */
 
 define("GOOGLEAPIKEY", "your google api key here");
@@ -14,7 +14,7 @@ function reset_tables(){
 	global $wpdb;
 	$myrows = $wpdb->get_results("DROP TABLE map_points;");
 	$myrows = $wpdb->get_results("DROP TABLE map_points_last;");
-	$myrows = $wpdb->get_results("CREATE TABLE map_points(map_point_id int,country_name varchar(64),city_name varchar(64),timezone varchar(64),lat float,lng float);");
+	$myrows = $wpdb->get_results("CREATE TABLE map_points(map_point_id int,country_name varchar(64),city_name varchar(64),timezone varchar(64),lat float,lng float)CHARACTER SET utf8 COLLATE utf8_general_ci;");
 	$myrows = $wpdb->get_results("CREATE TABLE map_points_last(last_max_counter int,last_i int, last_j int);");
 	$myrows = $wpdb->get_results("INSERT INTO map_points_last (last_max_counter ,last_i, last_j) VALUES(1,1,1);");
 }
@@ -122,14 +122,16 @@ function show_the_user_interface(){
 	echo '<script src="/wp-content/plugins/MapFilter/chosen_v1.6.2/chosen.jquery.js"></script>';
 	echo '<div id="timezone_div"><select id="timezone" data-placeholder = "Select a timezone" class="chosen1">';
 	TimezoneListOptions();
-	echo '</select></div>';
+	echo '</select><span id="num_of_timezones"></span></div>';
 	echo '<div id="country_div"><select id="country" data-placeholder = "Select a country" class="chosen2">';
 	CountryListOptions();
-	echo '</select></div>';
+	echo '</select><span id="num_of_countries"></span></div>';
 	echo '<div id="city_div"><select id="city" data-placeholder = "Select a city" class="chosen3">';
 	CityListOptions();
-	echo '</select></div>';
+	echo '</select><span id="num_of_cities"></span></div>';
 	echo '<button type="submit" id="RefreshMapButton">Filter</button>';
+	echo '<button type="submit" id="ShowNumberOfAllPoints">Check for new points and refresh dropdown menus</button>';
+	echo '<div id="AllPointsAre_Div"></div>';
 	
 	
 	
@@ -160,10 +162,24 @@ function show_the_user_interface(){
 	echo '$("#timezone_div").change(function(){';
 	echo '$("#country").load("/wp-content/plugins/MapFilter/ReloadField.php?field=country&timezone="+String($("#timezone").val()).split(" ").join("+"));';
 	echo '$("#city").load("/wp-content/plugins/MapFilter/ReloadField.php?field=city&timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+"));';
+	echo '$("#num_of_countries").load("/wp-content/plugins/MapFilter/GiveMeNumOf.php?field=countries&timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+"));';
+	echo '$("#num_of_cities").load("/wp-content/plugins/MapFilter/GiveMeNumOf.php?field=cities&timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+"));';
 	echo '});';
 	
 	echo '$("#country_div").change(function(){';
 	echo '$("#city").load("/wp-content/plugins/MapFilter/ReloadField.php?field=city&timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+"));';
+	echo '$("#num_of_cities").load("/wp-content/plugins/MapFilter/GiveMeNumOf.php?field=cities&timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+"));';
+	echo '});';
+	
+	echo '$("#ShowNumberOfAllPoints").click(function(){';
+	//echo 'alert("/wp-content/plugins/MapFilter/LoadMap.php?timezone="+String($("#timezone").val()).split(" ").join("+")+"&country="+String($("#country").val()).split(" ").join("+") + "&city="+String($("#city").val()).split(" ").join("+"));';
+	echo '$("#AllPointsAre_Div").load("/wp-content/plugins/MapFilter/ShowAllPoints.php");';
+	echo '$("#num_of_timezones").load("/wp-content/plugins/MapFilter/GiveMeNumOf.php?field=timezones");';
+	echo '$("#num_of_countries").load("/wp-content/plugins/MapFilter/GiveMeNumOf.php?field=countries");';
+	echo '$("#num_of_cities").load("/wp-content/plugins/MapFilter/GiveMeNumOf.php?field=cities");';
+	echo '$("#timezone").load("/wp-content/plugins/MapFilter/ListOptions.php?jquery_refresh_timezone=\"true\"");';
+	echo '$("#country").load("/wp-content/plugins/MapFilter/ReloadField.php?field=country");';
+	echo '$("#city").load("/wp-content/plugins/MapFilter/ReloadField.php?field=city");';
 	echo '});';
 	
 	//echo '$("#ExperimantalButton").click(function(){';
